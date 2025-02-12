@@ -26,7 +26,7 @@ jobs:
         miniforge-variant: miniforge3
         python-version: ${{ matrix.python-version }}
         auto-update-conda: true
-        channels: conda-forge
+        channels: conda-forge, defaults
         activate-environment: photo_manager_env
         environment-file: photo_manager_env.yml
         use-mamba: true
