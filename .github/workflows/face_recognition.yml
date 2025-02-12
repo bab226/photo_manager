@@ -26,14 +26,14 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         auto-update-conda: true
-        activate-environment: face-recognition-env
+        activate-environment: photo_manager_env
         use-mamba: true
         environment-file: environment.yml
 
     - name: Install dependencies
       run: |
         mamba env update --file environment.yml
-        source activate face-recognition-env
+        source activate photo_manager_env
 
     - name: Check conda installation
       run: |
@@ -43,5 +43,5 @@ jobs:
 
     - name: Run face recognition script tests
       run: |
-        source activate face-recognition-env
+        source activate photo_manager_env
         python -m unittest discover -s tests
