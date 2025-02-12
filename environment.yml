@@ -1,9 +1,11 @@
-name: face-recognition-env
+name: photo_manager_env
 channels:
   - conda-forge
 dependencies:
   - python=3.8
   - dlib
+  - cv2
+  - json
   - mtcnn
   - opencv
   - face_recognition
