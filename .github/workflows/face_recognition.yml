@@ -43,7 +43,9 @@ jobs:
         conda list
         conda env list
 
-    - name: Run face recognition script tests
+    - name: Run photo manager script tests
+      shell: bash -l {0}
       run: |
-        source activate photo_manager_env
+        source $(conda info --base)/etc/profile.d/conda.sh
+        conda activate photo_manager_env
         python -m unittest discover -s tests
