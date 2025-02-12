@@ -42,8 +42,13 @@ def preprocess_image(image_path, contrast_factor=1.5, resize_dim=(256, 256)):
     :param resize_dim: Tuple for the target resize dimensions (default is (256, 256)).
     :return: Preprocessed image.
     """
+    
+    # Determine the path to the shape_predictor_68_face_landmarks.dat file
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    predictor_path = os.path.join(script_dir, "shape_predictor_68_face_landmarks.dat")
+
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("/Users/bab226/Documents/photo_manager/shape_predictor_68_face_landmarks.dat")
+    predictor = dlib.shape_predictor(predictor_path)
 
     # Load image using PIL
     img_pil = Image.open(image_path)
