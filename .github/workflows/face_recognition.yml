@@ -20,19 +20,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Miniconda with mamba
+    - name: Set up Miniconda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        miniforge-variant: mambaforge
+        miniforge-variant: miniforge3
         python-version: ${{ matrix.python-version }}
         auto-update-conda: true
         channels: conda-forge
         activate-environment: photo_manager_env
         environment-file: photo_manager_env.yml
-        use-mamba: true
 
-    - name: Install dependencies
+    - name: Install mamba and dependencies
       run: |
+        conda install mamba -n base -c conda-forge
         mamba env update -f photo_manager_env.yml
         conda clean -a -y
 
@@ -41,7 +41,6 @@ jobs:
         conda info
         conda list
         conda env list
-        cat $(conda info --base)/.conda/environments.txt
 
     - name: Run photo manager script tests
       run: |
