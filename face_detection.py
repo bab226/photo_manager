@@ -8,7 +8,7 @@ from sklearn.metrics import silhouette_score
 import json 
 
 # Main
-directory = "/Users/bab226/Pictures/test_photos/test_photos"
+directory = "/Users/bab226/Documents/photo_manager/tests/test_images/"
 
 # Load and preprocess images
 images_with_paths = hf.load_and_process_images(directory, 1.5)
@@ -19,12 +19,16 @@ encodings_with_paths = hf.extract_encodings_with_paths(images_with_paths)
 all_encodings = [encoding for _, encoding in encodings_with_paths]
 
 # Find the optimal number of clusters and plot inertia vs. number of clusters
-optimal_k = hf.find_optimal_cluster_silhouette(all_encodings, max_k=max_k)
-print(f"Optimal number of clusters: {optimal_k}")
+try:
 
-# Perform clustering with optimal number of clusters
-kmeans = KMeans(n_clusters=optimal_k, random_state=42)
-cluster_labels = kmeans.fit_predict(all_encodings)
+    if len(all_encodings) >= 3:  # Ensuring at least 3 samples for silhouette analysis
+        optimal_k = hf.find_optimal_cluster_silhouette(all_encodings, max_k=10)
+        print(f"Optimal number of clusters: {optimal_k}")
+        hf.validate_clusters(all_encodings, optimal_k)
+        kmeans = KMeans(n_clusters=optimal_k, random_state=42)
+        cluster_labels = kmeans.fit_predict(all_encodings)
+except Exception as e:
+    print(f"An error occurred: {e}")
 
 # Assign cluster labels to images
 images_with_clusters = [(path, cluster) for (path, encoding), cluster in zip(encodings_with_paths, cluster_labels)]

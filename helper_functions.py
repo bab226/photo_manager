@@ -125,7 +125,19 @@ def find_optimal_cluster_and_plot(data, max_k=10):
     optimal_k = np.argmin(np.diff(inertia)) + 2
     return optimal_k
 
-def find_optimal_cluster_silhouette(data, max_k=10):
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+
+def find_optimal_cluster_silhouette(data, max_k=10, output_dir='./plots'):
+    """Find the optimal number of clusters using silhouette scores and save the plot."""
+    n_samples = len(data)
+    if n_samples < 2:
+        raise ValueError("Number of samples must be at least 2.")
+    
+    max_k = min(max_k, n_samples - 1)
+    
     silhouette_scores = []
     k_values = range(2, max_k + 1)
     
@@ -135,16 +147,31 @@ def find_optimal_cluster_silhouette(data, max_k=10):
         silhouette_avg = silhouette_score(data, cluster_labels)
         silhouette_scores.append(silhouette_avg)
     
+    if not silhouette_scores:
+        raise ValueError("Unable to calculate silhouette scores. Please check the input data.")
+    
     plt.figure(figsize=(8, 6))
     plt.plot(k_values, silhouette_scores, 'bx-')
     plt.xlabel('Number of clusters (k)')
     plt.ylabel('Silhouette Score')
     plt.title('Silhouette Score for Optimal Number of Clusters')
     plt.grid(True)
-    plt.show()
+    
+    # Save the plot to a file
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    output_file = os.path.join(output_dir, 'silhouette_scores.png')
+    plt.savefig(output_file)
+    plt.close()
     
     optimal_k = k_values[np.argmax(silhouette_scores)]
     return optimal_k
+
+def validate_clusters(data, k):
+    """Ensure the number of clusters is valid."""
+    if k >= len(data):
+        raise ValueError(f"Number of clusters (k={k}) must be less than the number of samples (n={len(data)}).")
+    return True
 
 def visualize_cluster_images(images_with_clusters, num_samples=5):
     clusters = {}

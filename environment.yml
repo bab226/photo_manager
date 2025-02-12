@@ -1,0 +1,19 @@
+name: face-recognition-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - dlib
+  - mtcnn
+  - opencv
+  - face_recognition
+  - pillow
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - piexif
+  - pytest
+  - pip
+  - pip:
+    - requests
+    - some-pypi-only-package

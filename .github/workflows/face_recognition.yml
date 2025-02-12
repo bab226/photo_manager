@@ -1,0 +1,40 @@
+name: Face Recognition CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        auto-update-conda: true
+        activate-environment: face-recognition-env
+        use-mamba: true
+        environment-file: environment.yml
+
+    - name: Install dependencies
+      run: |
+        mamba env update --file environment.yml
+        mamba install python=${{ matrix.python-version }}
+
+    - name: Run face recognition script tests
+      run: |
+        python -m unittest discover -s tests
