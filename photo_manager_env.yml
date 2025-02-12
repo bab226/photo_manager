@@ -1,8 +1,9 @@
 name: photo_manager_env
 channels:
   - conda-forge
+  - defaults  # Fallback to default channel as needed
 dependencies:
-  - python=3.8
+  - python=3.9.18
   - dlib
   - mtcnn
   - opencv
