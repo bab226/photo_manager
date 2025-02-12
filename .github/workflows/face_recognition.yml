@@ -1,4 +1,4 @@
-name: Face Recognition CI
+name: Photo Manager CI
 
 on:
   push:
@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,27 +20,30 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Miniconda
+    - name: Set up Miniconda with mamba
       uses: conda-incubator/setup-miniconda@v2
       with:
+        miniforge-variant: mambaforge
         python-version: ${{ matrix.python-version }}
         auto-update-conda: true
+        channels: conda-forge
         activate-environment: photo_manager_env
+        environment-file: photo_manager_env.yml
         use-mamba: true
-        environment-file: environment.yml
 
     - name: Install dependencies
       run: |
-        mamba env update --file environment.yml
-        source activate photo_manager_env
+        mamba env update -f photo_manager_env.yml
+        conda clean -a -y
 
     - name: Check conda installation
       run: |
         conda info
         conda list
         conda env list
+        cat $(conda info --base)/.conda/environments.txt
 
-    - name: Run face recognition script tests
+    - name: Run photo manager script tests
       run: |
         source activate photo_manager_env
         python -m unittest discover -s tests
