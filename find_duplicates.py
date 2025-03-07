@@ -1,4 +1,4 @@
-""" Removve duplicate images from photos folder and move them to the duplicates folder.
+""" Remove duplicate images from photos folder and move them to the duplicates folder.
     The script will find all images in the specified directory and its subdirectories, 
     compute an MD5 hash for each image, and then compare the hashes to find duplicates.
     The duplicates will be moved to a separate folder for review or deletion.
